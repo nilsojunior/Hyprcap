@@ -1,1 +1,1 @@
-/home/nilso/personal/screenshot/target/debug/screenshot: /home/nilso/personal/screenshot/src/hyprshade.rs /home/nilso/personal/screenshot/src/main.rs /home/nilso/personal/screenshot/src/slurp.rs
+/home/nilso/personal/screenshoter/target/debug/screenshot: /home/nilso/personal/screenshoter/src/hyprshade.rs /home/nilso/personal/screenshoter/src/main.rs /home/nilso/personal/screenshoter/src/slurp.rs

@@ -36,14 +36,13 @@ pub fn select_monitor() -> String {
 }
 
 pub fn select_window() -> String {
-    let script_path = "~/personal/screenshot/select-window.sh";
     let bash = Command::new("bash")
-        .args(["-c", script_path])
+        .args(["-c", "hyprctl clients -j | jq -r '.[] | select(.workspace.id != null) | .at,.size' | jq -s 'add' | jq '_nwise(4)' | jq -r '\"\\(.[0]),\\(.[1]) \\(.[2])x\\(.[3])\"' | slurp"])
         .output()
-        .expect("Failed to run bash commands");
+        .expect("Failed to run bash command");
 
     if !bash.status.success() {
-        eprintln!("Failed to select window");
+        println!("Failed to select window");
         exit(1);
     }
 
