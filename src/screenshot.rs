@@ -1,23 +1,22 @@
 use chrono::Local;
 use std::env;
+use std::path::PathBuf;
 use std::process::{exit, Command};
 
-pub fn get_screenshots_dir_path() -> String {
+pub fn get_screenshots_dir_path() -> PathBuf {
     if let Ok(default) = env::var("SCREENSHOOTER_DIR") {
-        return default;
+        return PathBuf::from(default);
     }
     if let Ok(xdg) = env::var("XDG_PICTURES_DIR") {
-        return xdg;
+        return PathBuf::from(xdg);
     } else {
-        return env::var("HOME").unwrap();
+        return PathBuf::from(env::var("HOME").unwrap());
     }
 }
 
 pub fn name_file() -> String {
     let time = Local::now().format("%Y-%m-%d_%I:%M:%p").to_string();
-
-    let dir_path = get_screenshots_dir_path();
-    let name = format!("{}/{}_screenshooter.png", dir_path, time);
+    let name = time + "_screenshooter.png";
     name
 }
 

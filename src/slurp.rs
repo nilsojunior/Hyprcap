@@ -42,7 +42,7 @@ pub fn select_window() -> String {
         .expect("Failed to run bash command");
 
     if !bash.status.success() {
-        println!("Failed to select window");
+        eprintln!("Failed to select window");
         exit(1);
     }
 

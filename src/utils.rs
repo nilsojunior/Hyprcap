@@ -29,10 +29,7 @@ pub fn send_notification(path: &String) {
 }
 pub fn send_clipboard_notification() {
     let notification = Command::new("notify-send")
-        .args([
-            "Screenshot saved",
-            &format!("Screenshot copied to clipboard"),
-        ])
+        .args(["Screenshot saved", &format!("Image copied to clipboard")])
         .status()
         .expect("Failed to run notify-send");
 
