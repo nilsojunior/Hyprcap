@@ -1,3 +1,4 @@
+use crate::Hyprshade;
 use chrono::Local;
 use std::env;
 use std::path::PathBuf;
@@ -37,6 +38,13 @@ impl Screenshot {
         println!("Image saved to: {}", path);
     }
 
+    pub fn save_without_shader(region: &String, path: &String) {
+        let shader = Hyprshade::get_current_shader();
+        Hyprshade::disable_shader();
+        Screenshot::save(&region, &path);
+        Hyprshade::enable_shader(&shader);
+    }
+
     pub fn only_clipboard(region: &String) {
         let bash = Command::new("bash")
             .args(["-c", &format!("grim -g \"{}\" - | wl-copy", region)])
@@ -47,5 +55,12 @@ impl Screenshot {
             eprintln!("Failed to take only clipboard screenshot");
             exit(1);
         }
+    }
+
+    pub fn only_clipboard_without_shader(region: &String) {
+        let shader = Hyprshade::get_current_shader();
+        Hyprshade::disable_shader();
+        Screenshot::only_clipboard(&region);
+        Hyprshade::enable_shader(&shader);
     }
 }

@@ -40,7 +40,7 @@ impl Hyprshade {
             .expect("Failed to run hyprshade");
 
         if !hyprshade.success() {
-            eprintln!("Failed to disable shader");
+            eprintln!("Failed to enable shader");
             exit(1);
         }
     }

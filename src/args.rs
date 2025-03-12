@@ -1,5 +1,5 @@
-use crate::name_file;
 use crate::PathBuf;
+use crate::Screenshot;
 use clap::Parser;
 
 #[derive(Parser)]
@@ -8,7 +8,7 @@ pub struct Cli {
     #[arg(short = 'm', long, help = "Specify mode [region, window, monitor]")]
     pub mode: String,
 
-    #[arg(short = 'f', long = "filename", default_value_t = name_file(), help = "Specify filename")]
+    #[arg(short = 'f', long = "filename", default_value_t = Screenshot::name_file(), help = "Specify filename")]
     pub filename: String,
 
     #[arg(
