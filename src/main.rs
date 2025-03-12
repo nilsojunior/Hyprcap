@@ -1,25 +1,27 @@
-use arguments::*;
+use args::*;
 use clap::Parser;
+use grab::*;
 use hyprshade::*;
+use notify::*;
 use screenshot::*;
-use slurp::*;
 use std::path::PathBuf;
 use utils::*;
 
-mod arguments;
+mod args;
+mod grab;
 mod hyprshade;
+mod notify;
 mod screenshot;
-mod slurp;
 mod utils;
 
 fn main() {
     let args = Cli::parse();
 
     let region = match args.mode.as_str() {
-        "region" => select_region(),
-        "window" => select_window(),
-        "monitor" => select_monitor(),
-        "active" => select_active_window(),
+        "region" => Grab::region(),
+        "window" => Grab::window(),
+        "monitor" => Grab::monitor(),
+        // "active" => select_active_window(),
         _ => {
             eprintln!("Mode does not exist");
             return;
@@ -27,15 +29,15 @@ fn main() {
     };
 
     if args.only_clipboard {
-        only_clipboard_screenshot(&region);
+        Screenshot::only_clipboard(&region);
         if !args.silent {
-            send_clipboard_notification();
+            Notify::screenshot_only_clipboard();
         }
     } else {
         let name = if !args.filename.is_empty() {
             args.filename
         } else {
-            name_file()
+            Screenshot::name_file()
         };
 
         let dir = if let Some(dir) = &args.directory {
@@ -46,7 +48,7 @@ fn main() {
                 return;
             }
         } else {
-            &get_screenshots_dir_path()
+            &Screenshot::get_dir_path()
         };
 
         let path = dir.join(name);
@@ -56,9 +58,9 @@ fn main() {
             .expect("Error converting Path to String")
             .to_string();
 
-        take_screenshot(&region, &path);
+        Screenshot::save(&region, &path);
         if !args.silent {
-            send_notification(&path);
+            Notify::screenshot(&path);
         }
     }
 
