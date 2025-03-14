@@ -9,20 +9,20 @@ You can take screenshots of windows, regions and monitors.
 Clone the repo.
 
 ```console
-    git clone https://github.com/nilsojunior/hyprcap.git
-    cd hyprcap
+git clone https://github.com/nilsojunior/hyprcap.git
+cd hyprcap
 ```
 
 Build with cargo.
 
 ```console
-    cargo build --release
+cargo build --release
 ```
 
 Add to path.
 
 ```console
-    sudo mv target/release/hyprcap /usr/bin
+sudo mv target/release/hyprcap /usr/bin
 ```
 
 ## Dependencies
@@ -38,19 +38,19 @@ Add to path.
 See the help command.
 
 ```console
-    hyprcap -h
+hyprcap -h
 ```
 
 Screenshot a window.
 
 ```console
-    hyprcap -m window
+hyprcap -m window
 ```
 
 You can move your cursor out of the screen for the screenshot.
 
 ```console
-    hyprcap -m window --move-cursor
+hyprcap -m window --move-cursor
 ```
 
 ## Hyprshade
