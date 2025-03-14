@@ -3,7 +3,7 @@ use crate::Screenshot;
 use clap::Parser;
 
 #[derive(Parser)]
-#[command(version = "1.0", about = "Screenshot tool for Hyprland")]
+#[command(version = "1.0", about = "Hyprcap: Screenshot utility for Hyprland")]
 pub struct Cli {
     #[arg(short = 'm', long, help = "Specify mode [region, window, monitor]")]
     pub mode: String,

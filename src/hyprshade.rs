@@ -33,7 +33,7 @@ impl Hyprshade {
         }
     }
 
-    pub fn enable_shader(shader: &String) {
+    pub fn enable_shader(shader: &str) {
         let hyprshade = Command::new("hyprshade")
             .args(["on", shader])
             .status()

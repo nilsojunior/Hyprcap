@@ -25,7 +25,9 @@ pub fn get_cursor_pos() -> String {
 
     let hyprctl = String::from_utf8_lossy(&hyprctl.stdout).trim().to_string();
     println!("{}", hyprctl);
-    hyprctl
+
+    // Remove the coma
+    hyprctl.replace(",", "")
 }
 
 pub fn copy_to_clipboard(path: &String) {

@@ -1,4 +1,3 @@
-use crate::Hyprshade;
 use chrono::Local;
 use std::env;
 use std::path::PathBuf;
@@ -8,7 +7,7 @@ pub struct Screenshot;
 
 impl Screenshot {
     pub fn get_dir_path() -> PathBuf {
-        if let Ok(default) = env::var("SCREENSHOOTER_DIR") {
+        if let Ok(default) = env::var("HYPRCAP_DIR") {
             return PathBuf::from(default);
         }
         if let Ok(xdg) = env::var("XDG_PICTURES_DIR") {
@@ -20,7 +19,7 @@ impl Screenshot {
 
     pub fn name_file() -> String {
         let time = Local::now().format("%Y-%m-%d_%I:%M:%p").to_string();
-        let name = time + "_screenshooter.png";
+        let name = time + "_hyprcap.png";
         name
     }
 
@@ -38,13 +37,6 @@ impl Screenshot {
         println!("Image saved to: {}", path);
     }
 
-    pub fn save_without_shader(region: &String, path: &String) {
-        let shader = Hyprshade::get_current_shader();
-        Hyprshade::disable_shader();
-        Screenshot::save(&region, &path);
-        Hyprshade::enable_shader(&shader);
-    }
-
     pub fn only_clipboard(region: &String) {
         let bash = Command::new("bash")
             .args(["-c", &format!("grim -g \"{}\" - | wl-copy", region)])
@@ -55,12 +47,5 @@ impl Screenshot {
             eprintln!("Failed to take only clipboard screenshot");
             exit(1);
         }
-    }
-
-    pub fn only_clipboard_without_shader(region: &String) {
-        let shader = Hyprshade::get_current_shader();
-        Hyprshade::disable_shader();
-        Screenshot::only_clipboard(&region);
-        Hyprshade::enable_shader(&shader);
     }
 }

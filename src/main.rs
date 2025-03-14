@@ -21,7 +21,6 @@ fn main() {
         "region" => Grab::region(),
         "window" => Grab::window(),
         "monitor" => Grab::monitor(),
-        // "active" => select_active_window(),
         _ => {
             eprintln!("Mode does not exist");
             return;
@@ -51,29 +50,50 @@ fn main() {
         .expect("Error converting Path to String")
         .to_string();
 
+    let cursorpos: Option<String> = if args.move_cursor {
+        Some(get_cursor_pos())
+    } else {
+        None
+    };
+
+    if cursorpos.is_some() {
+        move_cursor("1000", "1000");
+    }
+
+    let shader: Option<String> = if args.disable_shader {
+        Some(Hyprshade::get_current_shader())
+    } else {
+        None
+    };
+
+    if shader.is_some() {
+        Hyprshade::disable_shader();
+    }
+
     if args.only_clipboard {
-        if args.disable_shader {
-            Screenshot::only_clipboard_without_shader(&region);
-        } else {
-            Screenshot::only_clipboard(&region);
-        }
+        Screenshot::only_clipboard(&region);
         if !args.silent {
             Notify::screenshot_only_clipboard();
         }
-        return;
-    }
-
-    if args.disable_shader {
-        Screenshot::save_without_shader(&region, &path);
     } else {
         Screenshot::save(&region, &path);
+        copy_to_clipboard(&path);
+        if !args.silent {
+            Notify::screenshot(&path);
+        }
     }
-    if !args.silent {
-        Notify::screenshot(&path);
-    }
-    let cursorpos = get_cursor_pos();
 
-    if args.move_cursor {
-        move_cursor("5000", "5000");
+    if cursorpos.is_some() {
+        let cursorpos: String = cursorpos.expect("Cursorpos should be a String");
+        let mut cursorpos = cursorpos.split_whitespace();
+
+        let x = cursorpos.next().unwrap();
+        let y = cursorpos.next().unwrap();
+        move_cursor(x, y);
+    }
+
+    if shader.is_some() {
+        let shader: String = shader.expect("Shader should be a String");
+        Hyprshade::enable_shader(&shader);
     }
 }
